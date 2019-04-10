@@ -13,7 +13,7 @@ TextQueryInput _$TextQueryInputFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$TextQueryInputToJson(TextQueryInput instance) =>
-    <String, dynamic>{'text': instance.text};
+    <String, dynamic>{'text': instance.text?.toJson()};
 
 TextInput _$TextInputFromJson(Map<String, dynamic> json) {
   return TextInput(json['text'] as String,
@@ -32,7 +32,7 @@ EventQueryInput _$EventQueryInputFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$EventQueryInputToJson(EventQueryInput instance) =>
-    <String, dynamic>{'event': instance.event};
+    <String, dynamic>{'event': instance.event?.toJson()};
 
 EventInput _$EventInputFromJson(Map<String, dynamic> json) {
   return EventInput(json['name'] as String,

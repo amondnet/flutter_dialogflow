@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
 import 'package:flutter_dialogflow/v2/auth_google.dart';
+import 'package:flutter_dialogflow/v2/detect_intent.dart';
 import 'package:flutter_dialogflow/v2/query_input.dart';
 import 'package:meta/meta.dart';
 
@@ -118,35 +120,28 @@ class Dialogflow {
   }
 
   Future<AIResponse> detectIntent(QueryInput query) async {
-    var response = await authGoogle.post(_getUrl(),
-        headers: {
-          HttpHeaders.authorizationHeader: "Bearer ${authGoogle.getToken}"
-        },
-        body: jsonEncode(query.toJson()));
+    print(query.toJson());
+    print(json.encode(query.toJson()));
+
+    var response = await authGoogle
+        .post(_getUrl(),
+            headers: {
+              HttpHeaders.authorizationHeader: "Bearer ${authGoogle.getToken}"
+            },
+            body: json.encode(DetectIntentRequest(query)))
+        .catchError((error) {
+      print('error $error ');
+    });
+
     return AIResponse(body: json.decode(response.body));
   }
 
   Future<AIResponse> detectIntentText(String text) async {
-    var response = await authGoogle.post(
-      _getUrl(),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer ${authGoogle.getToken}"
-      },
-      body: jsonEncode(TextQueryInput(TextInput(text)).toJson()),
-    );
-    return AIResponse(body: json.decode(response.body));
+    return detectIntent(TextQueryInput(TextInput(text)));
   }
 
   Future<AIResponse> detectIntentEvent(
       String event, Map<String, dynamic> param) async {
-    var response = await authGoogle.post(
-      _getUrl(),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer ${authGoogle.getToken}"
-      },
-      body: jsonEncode(
-          EventQueryInput(EventInput(event, parameters: param)).toJson()),
-    );
-    return AIResponse(body: json.decode(response.body));
+    return detectIntent(EventQueryInput(EventInput(event, parameters: param)));
   }
 }

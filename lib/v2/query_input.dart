@@ -3,11 +3,13 @@ import 'package:json_annotation/json_annotation.dart';
 part 'query_input.g.dart';
 
 //@JsonSerializable()
-abstract class QueryInput {
-  Map<String, dynamic> toJson();
+class QueryInput {
+  Map<String, dynamic> toJson() {
+    return null;
+  }
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class TextQueryInput extends QueryInput {
   final TextInput text;
 
@@ -20,7 +22,7 @@ class TextQueryInput extends QueryInput {
   Map<String, dynamic> toJson() => _$TextQueryInputToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class TextInput {
   final String text;
   String languageCode;
@@ -33,7 +35,7 @@ class TextInput {
   Map<String, dynamic> toJson() => _$TextInputToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class EventQueryInput extends QueryInput {
   final EventInput event;
 
@@ -45,7 +47,7 @@ class EventQueryInput extends QueryInput {
   Map<String, dynamic> toJson() => _$EventQueryInputToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class EventInput {
   final String name;
   final Map<String, dynamic> parameters;
