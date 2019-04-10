@@ -40,9 +40,18 @@ EventInput _$EventInputFromJson(Map<String, dynamic> json) {
       languageCode: json['languageCode'] as String);
 }
 
-Map<String, dynamic> _$EventInputToJson(EventInput instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'parameters': instance.parameters,
-      'languageCode': instance.languageCode
-    };
+Map<String, dynamic> _$EventInputToJson(EventInput instance) {
+  final val = <String, dynamic>{
+    'name': instance.name,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('parameters', instance.parameters);
+  val['languageCode'] = instance.languageCode;
+  return val;
+}

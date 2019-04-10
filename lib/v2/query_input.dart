@@ -50,12 +50,13 @@ class EventQueryInput extends QueryInput {
 @JsonSerializable(explicitToJson: true)
 class EventInput {
   final String name;
-  final Map<String, dynamic> parameters;
+  @JsonKey(includeIfNull: false, nullable: true)
+  Map<String, dynamic> parameters;
   String languageCode;
 
   EventInput(
     this.name, {
-    this.parameters = const {},
+    this.parameters,
     this.languageCode = 'ko',
   });
 

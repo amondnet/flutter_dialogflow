@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
+import 'package:flutter_dialogflow/v2/context.dart';
+import 'package:flutter_dialogflow/v2/query_parameters.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -41,6 +43,23 @@ void main() {
 
     print('time: ${stopwatch.elapsedMilliseconds}');
     stopwatch.reset();
+  });
+
+  test('이벤트 테스트', () async {
+    AuthGoogle authGoogle = await AuthGoogleE().build();
+
+    Dialogflow dialogflow =
+        Dialogflow(authGoogle: authGoogle, language: Language.korean);
+    final response = await dialogflow.detectIntent(
+        EventQueryInput(EventInput('exercise_logging_cancel_event')),
+        params: QueryParameters(contexts: [
+          Context(
+              'projects/${authGoogle.getProjectId}/agent/sessions/${authGoogle.getSessionId}/exercise_logging-followup')
+        ]));
+    print(response.responseId);
+
+    print(response.getMessage());
+    print(response.queryResult.queryText);
   });
 }
 

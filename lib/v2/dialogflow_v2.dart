@@ -6,6 +6,7 @@ import 'package:flutter_dialogflow/dialogflow_v2.dart';
 import 'package:flutter_dialogflow/v2/auth_google.dart';
 import 'package:flutter_dialogflow/v2/detect_intent.dart';
 import 'package:flutter_dialogflow/v2/query_input.dart';
+import 'package:flutter_dialogflow/v2/query_parameters.dart';
 import 'package:meta/meta.dart';
 
 class Intent {
@@ -115,20 +116,21 @@ class Dialogflow {
 
   const Dialogflow({@required this.authGoogle, this.language = "en"});
 
-  String _getUrl() {
+  String getUrl() {
     return "https://dialogflow.googleapis.com/v2/projects/${authGoogle.getProjectId}/agent/sessions/${authGoogle.getSessionId}:detectIntent";
   }
 
-  Future<AIResponse> detectIntent(QueryInput query) async {
-    print(query.toJson());
-    print(json.encode(query.toJson()));
-
+  Future<AIResponse> detectIntent(QueryInput query,
+      {QueryParameters params}) async {
+    print(json.encode(DetectIntentRequest(query, queryParams: params)));
     var response = await authGoogle
-        .post(_getUrl(),
-            headers: {
-              HttpHeaders.authorizationHeader: "Bearer ${authGoogle.getToken}"
-            },
-            body: json.encode(DetectIntentRequest(query)))
+        .post(
+      getUrl(),
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer ${authGoogle.getToken}"
+      },
+      body: json.encode(DetectIntentRequest(query)),
+    )
         .catchError((error) {
       print('error $error ');
     });
@@ -140,8 +142,8 @@ class Dialogflow {
     return detectIntent(TextQueryInput(TextInput(text)));
   }
 
-  Future<AIResponse> detectIntentEvent(
-      String event, Map<String, dynamic> param) async {
+  Future<AIResponse> detectIntentEvent(String event,
+      [Map<String, dynamic> param]) async {
     return detectIntent(EventQueryInput(EventInput(event, parameters: param)));
   }
 }
