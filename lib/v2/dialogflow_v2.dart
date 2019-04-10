@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
 import 'package:flutter_dialogflow/v2/auth_google.dart';
-import 'package:flutter_dialogflow/v2/event_input.dart';
 import 'package:flutter_dialogflow/v2/query_input.dart';
 import 'package:meta/meta.dart';
 
@@ -122,27 +122,31 @@ class Dialogflow {
         headers: {
           HttpHeaders.authorizationHeader: "Bearer ${authGoogle.getToken}"
         },
-        body: jsonEncode(query));
+        body: jsonEncode(query.toJson()));
     return AIResponse(body: json.decode(response.body));
   }
 
   Future<AIResponse> detectIntentText(String text) async {
-    var response = await authGoogle.post(_getUrl(),
-        headers: {
-          HttpHeaders.authorizationHeader: "Bearer ${authGoogle.getToken}"
-        },
-        body: jsonEncode(TextQueryInput(TextInput(text))));
+    var response = await authGoogle.post(
+      _getUrl(),
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer ${authGoogle.getToken}"
+      },
+      body: jsonEncode(TextQueryInput(TextInput(text)).toJson()),
+    );
     return AIResponse(body: json.decode(response.body));
   }
 
   Future<AIResponse> detectIntentEvent(
       String event, Map<String, dynamic> param) async {
-    var response = await authGoogle.post(_getUrl(),
-        headers: {
-          HttpHeaders.authorizationHeader: "Bearer ${authGoogle.getToken}"
-        },
-        body:
-            jsonEncode(EventQueryInput(EventInput(event, parameters: param))));
+    var response = await authGoogle.post(
+      _getUrl(),
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer ${authGoogle.getToken}"
+      },
+      body: jsonEncode(
+          EventQueryInput(EventInput(event, parameters: param)).toJson()),
+    );
     return AIResponse(body: json.decode(response.body));
   }
 }
