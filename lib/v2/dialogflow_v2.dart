@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_dialogflow/v2/auth_google.dart';
+import 'package:flutter_dialogflow/v2/event_input.dart';
+import 'package:flutter_dialogflow/v2/query_input.dart';
 import 'package:meta/meta.dart';
 
 class Intent {
@@ -108,19 +110,18 @@ class Dialogflow {
   final AuthGoogle authGoogle;
   final String language;
 
-  const Dialogflow({@required this.authGoogle, this.language="en"});
+  const Dialogflow({@required this.authGoogle, this.language = "en"});
 
   String _getUrl() {
     return "https://dialogflow.googleapis.com/v2/projects/${authGoogle.getProjectId}/agent/sessions/${authGoogle.getSessionId}:detectIntent";
   }
 
-  Future<AIResponse> detectIntent(String query) async {
+  Future<AIResponse> detectIntent(QueryInput query) async {
     var response = await authGoogle.post(_getUrl(),
         headers: {
           HttpHeaders.authorizationHeader: "Bearer ${authGoogle.getToken}"
         },
-        body:
-            "{'queryInput':{'text':{'text':'$query','language_code':'$language'}}}");
+        body: jsonEncode(query));
     return AIResponse(body: json.decode(response.body));
   }
 }
