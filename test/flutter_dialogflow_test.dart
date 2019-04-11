@@ -51,11 +51,8 @@ void main() {
     Dialogflow dialogflow =
         Dialogflow(authGoogle: authGoogle, language: Language.korean);
     final response = await dialogflow.detectIntent(
-        EventQueryInput(EventInput('exercise_logging_cancel_event')),
-        params: QueryParameters(contexts: [
-          Context(
-              'projects/${authGoogle.getProjectId}/agent/sessions/${authGoogle.getSessionId}/exercise_logging-followup')
-        ]));
+      EventQueryInput(EventInput('exercise_logging_CANCEL')),
+    );
     print(response.responseId);
 
     print(response.getMessage());

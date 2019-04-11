@@ -2,19 +2,15 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'context.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class Context {
   final String name;
+  @JsonKey(nullable: true, defaultValue: 0)
   final num lifespanCount;
+  @JsonKey(nullable: true)
   final Map<String, dynamic> parameters;
-  final bool resetContexts;
 
-  Context(
-    this.name, {
-    this.lifespanCount = 2,
-    this.parameters = null,
-    this.resetContexts,
-  });
+  Context(this.name, {this.lifespanCount = 0, this.parameters = null});
 
   Map<String, dynamic> toJson() => _$ContextToJson(this);
 

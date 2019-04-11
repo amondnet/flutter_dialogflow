@@ -4,10 +4,11 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'detect_intent.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class DetectIntentRequest {
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
   final QueryInput queryInput;
+  @JsonKey(nullable: true)
   final QueryParameters queryParams;
 
   DetectIntentRequest(this.queryInput, {this.queryParams});
