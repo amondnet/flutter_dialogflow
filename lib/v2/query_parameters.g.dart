@@ -8,6 +8,7 @@ part of 'query_parameters.dart';
 
 QueryParameters _$QueryParametersFromJson(Map<String, dynamic> json) {
   return QueryParameters(
+      payload: json['payload'] as Map<String, dynamic>,
       timeZone: json['timeZone'] as String,
       contexts: (json['contexts'] as List)
           ?.map((e) =>
@@ -19,6 +20,7 @@ QueryParameters _$QueryParametersFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$QueryParametersToJson(QueryParameters instance) =>
     <String, dynamic>{
       'timeZone': instance.timeZone,
+      'payload': instance.payload,
       'contexts': instance.contexts,
       'resetContexts': instance.resetContexts
     };

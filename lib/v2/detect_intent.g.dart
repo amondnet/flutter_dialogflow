@@ -17,10 +17,17 @@ DetectIntentRequest _$DetectIntentRequestFromJson(Map<String, dynamic> json) {
               json['queryParams'] as Map<String, dynamic>));
 }
 
-Map<String, dynamic> _$DetectIntentRequestToJson(
-        DetectIntentRequest instance) =>
-    <String, dynamic>{
-      'queryInput':
-          instance.queryInput == null ? null : _dataToJson(instance.queryInput),
-      'queryParams': instance.queryParams?.toJson()
-    };
+Map<String, dynamic> _$DetectIntentRequestToJson(DetectIntentRequest instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('queryInput',
+      instance.queryInput == null ? null : _dataToJson(instance.queryInput));
+  writeNotNull('queryParams', instance.queryParams?.toJson());
+  return val;
+}

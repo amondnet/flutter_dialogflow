@@ -6,10 +6,11 @@ part 'query_parameters.g.dart';
 @JsonSerializable()
 class QueryParameters {
   final String timeZone;
-
+  final Map<String, dynamic> payload;
   final List<Context> contexts;
   final bool resetContexts;
   QueryParameters({
+    this.payload,
     this.timeZone,
     this.contexts,
     this.resetContexts,

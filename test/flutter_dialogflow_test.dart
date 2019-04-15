@@ -51,12 +51,15 @@ void main() {
     Dialogflow dialogflow =
         Dialogflow(authGoogle: authGoogle, language: Language.korean);
     final response = await dialogflow.detectIntent(
-      EventQueryInput(EventInput('exercise_logging_CANCEL')),
-    );
+        EventQueryInput(
+            EventInput('WEIGHT_CURRENT', parameters: {'weight': 80})),
+        params:
+            QueryParameters(payload: {'weight': 80}, timeZone: 'Asia/Seoul'));
     print(response.responseId);
 
     print(response.getMessage());
     print(response.queryResult.queryText);
+    print(response.queryResult.action);
   });
 }
 
